@@ -1,4 +1,5 @@
 ﻿using ApiSample.DTOs.Guests;
+using ApiSample.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,6 +9,7 @@ namespace ApiSample.DAL
 {
     public class SqlConnectionExampleService : IExampleService
     {
+        // Connection string
         private readonly string ConnStr = @"Data Source=DESKTOP-Q7C7E9V\DB00;Initial Catalog=API_hotel;Integrated Security=True;";
 
         public ICollection<GuestResponseDto> GetGuestsCollection(string lastName)
@@ -161,6 +163,37 @@ namespace ApiSample.DAL
         public string Test()
         {
             return "Działa! ta wersja korzysta z bazy danych mssql API_hotel";
+        }
+
+        public ICollection<Gosc> GetGuestsCollectionWithReservations(string lastName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Przykład jak nie należy tworzyć metod (poniższa umożliwia atak SQLI)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteGuestStr(string id)
+        {
+            try
+            {
+                using var sqlConn = new SqlConnection(ConnStr);
+                using var sqlCmd = new SqlCommand
+                {
+                    Connection = sqlConn
+                };
+                sqlCmd.CommandText = $@"DELETE FROM Gosc WHERE IdGosc = {id};"; // przykład SQLI
+                                                                                //  sqlCmd.Parameters.AddWithValue("IdGuest", id);
+                sqlConn.Open();
+                sqlCmd.ExecuteNonQuery();
+                return true;
+            }
+            catch (SqlException s)
+            {
+                return false;
+            }
         }
     }
 }

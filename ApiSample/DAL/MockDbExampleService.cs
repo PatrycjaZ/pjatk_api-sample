@@ -108,6 +108,15 @@ namespace ApiSample.DAL
             return "Działa!";
         }
 
+        public ICollection<Models.Gosc> GetGuestsCollectionWithReservations(string lastName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteGuestStr(string id)
+        {
+            throw new NotImplementedException();
+        }
 
         private class Gosc
         {

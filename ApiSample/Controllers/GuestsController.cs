@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using ApiSample.DAL;
 using ApiSample.DTOs.Guests;
 using Microsoft.AspNetCore.Http;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -17,7 +16,7 @@ namespace ApiSample.Controllers
     {
         private readonly IExampleService _service;
 
-        // ctor + TAB + TAB
+        // ctor + tab + tab
         public GuestsController(IExampleService service)
         {
             _service = service;
@@ -36,6 +35,7 @@ namespace ApiSample.Controllers
         public IActionResult GetGuests(string lastname)
         {
             //tutaj będziemy zwracać listę gości
+            /* return Ok(_service.GetGuestsCollectionWithReservations(lastname)); */
             return Ok(_service.GetGuestsCollection(lastname));
         }
 
@@ -75,6 +75,16 @@ namespace ApiSample.Controllers
         public IActionResult DeleteGuest(int id)
         {
             if (_service.DeleteGuest(id))
+                return Ok($"Guest with id {id} has been deleted.");
+            else
+                return BadRequest("Guest has reservation!");
+        }
+
+        // sql injection
+        [HttpDelete("sqli")]
+        public IActionResult DeleteGuestStr(string id)
+        {
+            if (_service.DeleteGuestStr(id))
                 return Ok($"Guest with id {id} has been deleted.");
             else
                 return BadRequest("Guest not found!");

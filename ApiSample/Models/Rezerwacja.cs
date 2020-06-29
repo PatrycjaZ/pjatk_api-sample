@@ -13,6 +13,6 @@ namespace ApiSample.Models
         public bool Zaplacona { get; set; }
 
         public virtual Gosc IdGoscNavigation { get; set; }
-        public virtual Pokoj NrPokojuNavigation { get; set; }
+        public virtual Pokoj NrPokojuNavigation { get; set; } // nawigacja do pokoi
     }
 }
